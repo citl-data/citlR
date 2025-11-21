@@ -1,0 +1,14 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^\.github$
+^\.travis\.yml$
+^appveyor\.yml$
+^cran-comments\.md$
+^\.httr-oauth$
+^docs$
+^pkgdown$
+^_pkgdown\.yml$
+^\.DS_Store$
+^dev$
+^data-raw$ 

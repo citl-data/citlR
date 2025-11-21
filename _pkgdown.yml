@@ -1,0 +1,78 @@
+url: https://your-username.github.io/citlR
+
+template:
+  bootstrap: 5
+
+home:
+  title: citlR • Survey Data Tools
+  description: >
+    A collection of functions for analyzing survey data at the Center for 
+    Innovation in Teaching & Learning (CITL) at the University of Illinois Urbana-Champaign.
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github]
+  components:
+    articles:
+      text: Articles
+      href: articles/index.html
+
+reference:
+- title: Table Generation
+  desc: Functions for creating frequency tables
+- contents:
+  - gen_table
+  - gen_table_group_dym
+  - bind_col_v23
+  - bind_col_vars
+  - bind_row
+  - bind_row_group_v23_2
+
+- title: Statistical Analysis
+  desc: Functions for statistical testing
+- contents:
+  - our_anova_v23_2
+  - our_ttest_v23
+  - games_howell_v23
+  - our_tukey
+  - get_w_desc_stats
+  - our_levene_v23
+  - welch_f
+  - two_sample_ttest
+
+- title: Visualization
+  desc: Functions for creating charts and plots
+- contents:
+  - print_stacked_bar_v23
+  - print_bar_v23
+  - grouped_bar_chart_v23
+  - print_index_box
+
+- title: Table Formatting
+  desc: Functions for formatting and printing tables
+- contents:
+  - print_simple_kable
+  - print_com_kable
+  - print_desc_stats
+
+- title: Utility Functions
+  desc: Helper functions for data processing
+- contents:
+  - frq
+  - get_a_lot
+  - read.spss
+  - get_interlock_seq
+  - get_vars_by_str
+  - run_inner_loop
+  - run_inner_loop_graph
+  - kexpand
+  - wrapper
+  - wrap_format
+  - trim
+
+authors:
+  CITL Data Analytics:
+    href: https://citl.illinois.edu/citl-101/data-analytics
+
+# End of file

@@ -1,0 +1,189 @@
+---
+title: "Getting Started with citlR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with citlR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(citlR)
+```
+
+## Overview
+
+citlR provides a comprehensive set of functions for analyzing survey data, developed at the Center for Innovation in Teaching & Learning (CITL) at the University of Illinois Urbana-Champaign. The package includes tools for:
+
+- **Frequency table generation** with support for weighting and grouping
+- **Statistical testing** (ANOVA, t-tests) with automatic variance equality checking  
+- **Data visualization** with customizable charts and plots
+- **Table formatting** for both HTML and LaTeX output
+- **Utility functions** for data processing and manipulation
+
+## Loading Survey Data
+
+The package includes a helper function for reading SPSS files:
+
+```{r}
+# Read SPSS file with proper labelling
+survey_data <- read.spss("path/to/survey.sav")
+
+# This returns a list with:
+# - dataLab: data with proper factor conversion
+# - dataNum: data with labels stripped (numeric)
+```
+
+## Basic Frequency Tables
+
+### Simple Frequency Table
+
+```{r}
+# Generate a basic frequency table
+freq_table <- gen_table(survey_data$dataLab, "satisfaction_rating")
+print(freq_table)
+```
+
+### Grouped Frequency Tables
+
+```{r}
+# Create tables split by demographic groups
+grouped_table <- gen_table_group_dym(survey_data$dataLab, 
+                                    var = "satisfaction_rating", 
+                                    group = "gender")
+print(grouped_table)
+```
+
+## Statistical Analysis
+
+### ANOVA with Post Hoc Tests
+
+```{r}
+# Perform ANOVA with automatic variance testing
+anova_result <- our_anova_v23_2(survey_data$dataNum, 
+                               survey_data$dataLab, 
+                               "satisfaction_rating", 
+                               "department")
+
+# View results
+print(anova_result$aov)
+print(anova_result$post_hoc)
+```
+
+### T-Tests
+
+```{r}
+# Two-sample t-test with variance equality testing
+ttest_result <- our_ttest_v23(survey_data$dataNum,
+                             survey_data$dataLab,
+                             "satisfaction_rating",
+                             "gender")
+print(ttest_result)
+```
+
+## Data Visualization
+
+### Stacked Bar Charts
+
+```{r}
+# Create data for stacked bar chart
+vars <- c("satisfaction_1", "satisfaction_2", "satisfaction_3")
+questions <- c("Overall quality", "Staff helpfulness", "Timeliness")
+
+chart_data <- bind_col_v23(survey_data$dataLab, vars, qs = questions)
+
+# Generate stacked bar chart
+chart <- print_stacked_bar_v23(chart_data, 
+                              title = "Satisfaction Ratings",
+                              sort = TRUE)
+print(chart)
+```
+
+### Simple Bar Charts
+
+```{r}
+# Create a simple bar chart
+simple_chart <- print_bar_v23(freq_table, 
+                             title = "Overall Satisfaction")
+print(simple_chart)
+```
+
+## Table Formatting
+
+### HTML/LaTeX Tables
+
+```{r}
+# Print formatted table for reports
+print_simple_kable(freq_table, 
+                  caption = "Satisfaction Ratings",
+                  newname = "Response")
+
+# Print combined tables with custom formatting
+print_com_kable(grouped_table,
+               caption = "Satisfaction by Gender",
+               col1_width = "4cm",
+               col_width = "2.5cm")
+```
+
+## Advanced Features
+
+### Check-All Questions
+
+```{r}
+# Analyze check-all-that-apply questions
+services_vars <- get_vars_by_str(survey_data$dataLab, "services_used_")
+
+# Create frequency table for check-all questions
+check_table <- bind_row(survey_data$dataLab, 
+                       varlist = services_vars,
+                       sort_by = "N")
+print(check_table)
+```
+
+### Weighted Descriptive Statistics
+
+```{r}
+# Calculate weighted descriptive statistics
+desc_stats <- get_w_desc_stats(survey_data$dataNum,
+                              survey_data$dataLab,
+                              index = "satisfaction_index")
+print(desc_stats)
+
+# By group
+desc_by_group <- get_w_desc_stats(survey_data$dataNum,
+                                 survey_data$dataLab,
+                                 group = "department",
+                                 index = "satisfaction_index")
+print(desc_by_group)
+```
+
+## Automated Report Generation
+
+The package includes functions for automated significance testing and report generation:
+
+```{r}
+# Run significance testing loops for multiple groups
+groups <- c("gender", "department", "age_group")
+
+run_inner_loop_graph(survey_data$dataLab,
+                    survey_data$dataNum,
+                    var = "satisfaction_rating",
+                    group = groups,
+                    caption = "Table: Satisfaction Ratings")
+```
+
+## Next Steps
+
+- See the function reference for detailed documentation of all functions
+- Check out additional vignettes for specific use cases
+- Visit the CITL website for more resources on survey data analysis
+
+For more examples and advanced usage, see the other vignettes in this package. 
