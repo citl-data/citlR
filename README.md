@@ -10,7 +10,7 @@ You can install the development version of citlR from GitHub with:
 
 ```r
 # install.packages("devtools")
-devtools::install_github("your-username/citlR")
+devtools::install_github("citl-data/citlR")
 ```
 
 Or install from source:
